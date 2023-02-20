@@ -2,13 +2,16 @@ package com.ahvuit.be_shoeshop.entity;
 
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
+
 public class ProductEntity {
 
+    @Id
+    private String productId;
     private String name;
     private String description;
     private Integer brandId;
     private Integer categoryId;
-    private String productName;
     private Float price;
     private Float rate;
     private Boolean productNew;
@@ -23,14 +26,14 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity(String name, String description, Integer brandId, Integer categoryId, String productName,
+    public ProductEntity(String productId, String name, String description, Integer brandId, Integer categoryId,
             Float price, Float rate, Boolean productNew, Integer purchase, Integer stock, Boolean active, String image,
             Date createdDate, Date dateUpdated, Integer updateBy) {
+        this.productId = productId;
         this.name = name;
         this.description = description;
         this.brandId = brandId;
         this.categoryId = categoryId;
-        this.productName = productName;
         this.price = price;
         this.rate = rate;
         this.productNew = productNew;
@@ -41,6 +44,14 @@ public class ProductEntity {
         this.createdDate = createdDate;
         this.dateUpdated = dateUpdated;
         this.updateBy = updateBy;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getName() {
@@ -73,14 +84,6 @@ public class ProductEntity {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
     }
 
     public Float getPrice() {
