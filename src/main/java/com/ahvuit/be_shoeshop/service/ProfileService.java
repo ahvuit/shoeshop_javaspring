@@ -1,5 +1,7 @@
 package com.ahvuit.be_shoeshop.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +18,11 @@ public class ProfileService {
     private ProfileRepository profileRepository;
 
     public ResponseEntity<ApiResult> findById(String id) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResult(true, 200, "Query product successfully", profileRepository.findAll()));
+        Optional<Profile> foundProfile = profileRepository.findById(id);
+        return foundProfile.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResult(true, 200, "Query profile successfully", foundProfile))
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                        new ApiResult(false, 404, "Cannot find profile", null));
     }
 
     public ResponseEntity<ApiResult> updateProfile(Profile newProfile, String id) {
