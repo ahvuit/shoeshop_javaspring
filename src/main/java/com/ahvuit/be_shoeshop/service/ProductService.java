@@ -15,6 +15,8 @@ import com.ahvuit.be_shoeshop.repositories.ProductRepository;
 @Service
 public class ProductService {
 
+        // CRUD product service
+
         @Autowired
         private ProductRepository repository;
 
@@ -37,7 +39,7 @@ public class ProductService {
                 List<Product> foundProducts = repository.findByName(newProduct.getName());
                 return foundProducts.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(
                                 new ApiResult(true, 200, "insert new product successfully",
-                                                this.repository.save(newProduct)))
+                                                repository.save(newProduct)))
                                 : ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
                                                 new ApiResult(false, 404, "Cannot insert new product", null));
 
@@ -69,7 +71,7 @@ public class ProductService {
                                                 updatedProduct));
         }
 
-        public ResponseEntity<ApiResult> deleteTask(String id) {
+        public ResponseEntity<ApiResult> deleteProduct(String id) {
                 boolean exists = repository.existsById(id);
                 if (exists) {
                         repository.deleteById(id);

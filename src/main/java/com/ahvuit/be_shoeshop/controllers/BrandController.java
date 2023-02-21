@@ -11,40 +11,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ahvuit.be_shoeshop.models.ApiResult;
-import com.ahvuit.be_shoeshop.models.Product;
-import com.ahvuit.be_shoeshop.service.ProductService;
+import com.ahvuit.be_shoeshop.models.Brand;
+import com.ahvuit.be_shoeshop.service.BrandService;
 
 @RestController
-public class ProductController {
-
+public class BrandController {
     @Autowired
-    private ProductService productService;
+    private BrandService brandService;
 
-    @GetMapping("/api/getAllProducts")
-    ResponseEntity<ApiResult> getAllProducts() {
-        return productService.getAllProducts();
+    @GetMapping("/api/getAllBrands")
+    ResponseEntity<ApiResult> getAllBrands() {
+        return brandService.getAllBrands();
     }
 
-    @GetMapping("/api/getProductById/{id}")
+    @GetMapping("/api/getBrandById/{id}")
     ResponseEntity<ApiResult> findById(@PathVariable String id) {
-        return productService.findById(id);
+        return brandService.findById(id);
     }
 
-    @PostMapping("/api/insertProduct")
-    ResponseEntity<ApiResult> insertProduct(@RequestBody Product product) {
+    @PostMapping("/api/insertBrand")
+    ResponseEntity<ApiResult> insertBrand(@RequestBody Brand brand) {
         // 2 products must not have the same name !
-        return productService.insertProduct(product);
-
+        return brandService.insertBrand(brand);
     }
 
-    @PutMapping("/api/updateProduct/{id}")
-    public ResponseEntity<ApiResult> updateProduct(@RequestBody Product product, @PathVariable String id) {
-        return productService.updateProduct(product, id);
+    @PutMapping("/api/updateBrand/{id}")
+    public ResponseEntity<ApiResult> updateProduct(@RequestBody Brand brand, @PathVariable String id) {
+        return brandService.updateBrand(brand, id);
     }
 
-    @DeleteMapping("/api/deleteProduct/{id}")
+    @DeleteMapping("/api/deleteBrand/{id}")
     public ResponseEntity<ApiResult> deleteTask(@PathVariable String id) {
-        return productService.deleteProduct(id);
+        return brandService.deleteBrand(id);
     }
-
 }

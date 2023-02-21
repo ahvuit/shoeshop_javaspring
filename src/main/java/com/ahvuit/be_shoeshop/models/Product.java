@@ -1,8 +1,6 @@
 package com.ahvuit.be_shoeshop.models;
 
 import java.util.Date;
-
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.ahvuit.be_shoeshop.entity.ProductEntity;
@@ -18,18 +16,6 @@ public class Product extends ProductEntity {
             Date createdDate, Date dateUpdated, Integer updateBy) {
         super(productId, name, description, brandId, categoryId, price, rate, productNew, purchase, stock, active,
                 image, createdDate, dateUpdated, updateBy);
-    }
-
-    @Override
-    public String getName() {
-        // TODO Auto-generated method stub
-        return super.getName();
-    }
-
-    @Override
-    public String getProductId() {
-        // TODO Auto-generated method stub
-        return super.getProductId();
     }
 
 }
