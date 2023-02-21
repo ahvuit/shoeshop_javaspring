@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/api/deleteProduct/{id}")
-    public ResponseEntity<ApiResult> deleteTask(@PathVariable String id) {
+    public ResponseEntity<ApiResult> deleteProduct(@PathVariable String id) {
         return productService.deleteProduct(id);
     }
 

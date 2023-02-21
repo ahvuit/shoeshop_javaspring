@@ -41,7 +41,7 @@ public class BrandController {
     }
 
     @DeleteMapping("/api/deleteBrand/{id}")
-    public ResponseEntity<ApiResult> deleteTask(@PathVariable String id) {
+    public ResponseEntity<ApiResult> deleteBrand(@PathVariable String id) {
         return brandService.deleteBrand(id);
     }
 }

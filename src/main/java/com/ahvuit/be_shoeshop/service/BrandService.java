@@ -14,6 +14,7 @@ import com.ahvuit.be_shoeshop.repositories.BrandRepository;
 
 @Service
 public class BrandService {
+
         // CRUD brand service
 
         @Autowired
@@ -21,7 +22,7 @@ public class BrandService {
 
         public ResponseEntity<ApiResult> getAllBrands() {
                 return ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Query product successfully", this.repository.findAll()));
+                                new ApiResult(true, 200, "Query product successfully", repository.findAll()));
         }
 
         public ResponseEntity<ApiResult> findById(String id) {

@@ -21,9 +21,8 @@ public class ProductService {
         private ProductRepository repository;
 
         public ResponseEntity<ApiResult> getAllProducts() {
-
                 return ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Query product successfully", this.repository.findAll()));
+                                new ApiResult(true, 200, "Query product successfully", repository.findAll()));
         }
 
         public ResponseEntity<ApiResult> findById(String id) {
