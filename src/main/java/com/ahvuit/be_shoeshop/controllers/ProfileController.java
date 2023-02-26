@@ -18,8 +18,8 @@ public class ProfileController {
     private ProfileService profileService;
 
     @GetMapping("/api/getProfile/{id}")
-    ResponseEntity<ApiResult> findById(@PathVariable String id) {
-        return profileService.findById(id);
+    ResponseEntity<ApiResult> findByUserId(@PathVariable String id) {
+        return profileService.findByUserId(id);
     }
 
     @PutMapping("/api/updateProfile/{id}")

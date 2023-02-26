@@ -9,10 +9,6 @@ public class User extends UserEntity {
     public User() {
     }
 
-    public User(Profile profile) {
-        this.profile = profile;
-    }
-
     public User(String userId, String email, String password, String uType, boolean active) {
         super(userId, email, password, uType, active);
     }
