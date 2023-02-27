@@ -35,11 +35,11 @@ public class ProfileService {
                     profile.setAddress(newProfile.getAddress());
                     return profileRepository.save(profile);
                 }).orElseGet(() -> {
-                    newProfile.setUserId(id);
+                    newProfile.setProfileId(id);
                     return profileRepository.save(newProfile);
                 });
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResult(true, 200, "Update Product successfully",
+                new ApiResult(true, 200, "Update profile successfully",
                         updatedProfile));
     }
 

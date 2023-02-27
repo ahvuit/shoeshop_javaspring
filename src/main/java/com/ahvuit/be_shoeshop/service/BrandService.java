@@ -22,7 +22,7 @@ public class BrandService {
 
         public ResponseEntity<ApiResult> getAllBrands() {
                 return ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Query product successfully", repository.findAll()));
+                                new ApiResult(true, 200, "Query brand successfully", repository.findAll()));
         }
 
         public ResponseEntity<ApiResult> findById(String id) {
