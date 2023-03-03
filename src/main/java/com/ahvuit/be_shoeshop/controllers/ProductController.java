@@ -2,6 +2,7 @@ package com.ahvuit.be_shoeshop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,8 @@ import com.ahvuit.be_shoeshop.models.ApiResult;
 import com.ahvuit.be_shoeshop.models.Product;
 import com.ahvuit.be_shoeshop.service.ProductService;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @RestController
 public class ProductController {
 
@@ -21,7 +24,8 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/api/getAllProducts")
-    ResponseEntity<ApiResult> getAllProducts() {
+    ResponseEntity<ApiResult> getAllProducts(HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
         return productService.getAllProducts();
     }
 
