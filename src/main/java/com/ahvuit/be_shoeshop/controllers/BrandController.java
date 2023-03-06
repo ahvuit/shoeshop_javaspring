@@ -24,7 +24,7 @@ public class BrandController {
         return brandService.getAllBrands();
     }
 
-    @GetMapping("/api/getBrandById/{id}")
+    @GetMapping("/api/getBrandDetails/{id}")
     ResponseEntity<ApiResult> findById(@PathVariable String id) {
         return brandService.findById(id);
     }

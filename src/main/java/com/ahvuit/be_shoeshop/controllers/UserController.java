@@ -28,7 +28,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/api/getUserById/{id}")
+    @GetMapping("/api/getUserDetails/{id}")
     ResponseEntity<ApiResult> findById(@PathVariable String id) {
         return userService.findById(id);
     }

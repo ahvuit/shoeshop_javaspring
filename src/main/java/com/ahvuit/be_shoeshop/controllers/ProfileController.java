@@ -17,7 +17,7 @@ public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
-    @GetMapping("/api/getProfile/{id}")
+    @GetMapping("/api/getProfileDetails/{id}")
     ResponseEntity<ApiResult> findByUserId(@PathVariable String id) {
         return profileService.findByUserId(id);
     }

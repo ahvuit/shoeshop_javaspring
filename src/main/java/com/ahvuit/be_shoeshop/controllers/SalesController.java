@@ -24,7 +24,7 @@ public class SalesController {
         return salesService.getAllSales();
     }
 
-    @GetMapping("/api/getSalesById/{id}")
+    @GetMapping("/api/getSalesDetails/{id}")
     ResponseEntity<ApiResult> getSalesById(@PathVariable String id) {
         return salesService.findById(id);
     }

@@ -25,7 +25,7 @@ public class StatusController {
         return statusService.getAllStatus();
     }
 
-    @GetMapping("/api/getStatusById/{id}")
+    @GetMapping("/api/getStatusDetails/{id}")
     ResponseEntity<ApiResult> findById(@PathVariable String id) {
         return statusService.findById(id);
     }

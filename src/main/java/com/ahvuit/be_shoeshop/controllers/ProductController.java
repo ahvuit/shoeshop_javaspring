@@ -29,7 +29,7 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/api/getProductById/{id}")
+    @GetMapping("/api/getProductDetails/{id}")
     ResponseEntity<ApiResult> findById(@PathVariable String id) {
         return productService.findById(id);
     }
@@ -38,7 +38,6 @@ public class ProductController {
     ResponseEntity<ApiResult> insertProduct(@RequestBody Product product) {
         // 2 products must not have the same name !
         return productService.insertProduct(product);
-
     }
 
     @PutMapping("/api/updateProduct/{id}")
