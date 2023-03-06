@@ -63,26 +63,20 @@ public class UserService implements UserDetailsService {
                                 user.setActive(true);
                                 userRepository.save(user);
 
-                                Optional<User> user1 = userRepository.findByEmail(user.getEmail());
+                                Profile profile = new Profile();
+                                profile.setUserId(user.getUserId());
+                                profile.setImageUrl("https://cdn-icons-png.flaticon.com/512/6596/6596121.png");
+                                profileRepository.save(profile);
+                                // Create new user for api json
+                                User userResponse = new User(user.getUserId(), user.getEmail(),
+                                                user.getPassword(),
+                                                user.getUType(),
+                                                user.isActive(),
+                                                profile);
 
-                                // Create new profile and add profile to db with userId = user1.getUserId,
-                                // imageUrl = avatar define
-                                if (user1.isPresent()) {
-                                        Profile profile = new Profile();
-                                        profile.setUserId(user1.get().getUserId());
-                                        profile.setImageUrl("https://cdn-icons-png.flaticon.com/512/6596/6596121.png");
-                                        profileRepository.save(profile);
-                                        // Create new user for api json
-                                        User user2 = new User(user1.get().getUserId(), user1.get().getEmail(),
-                                                        user1.get().getPassword(),
-                                                        user1.get().getUType(),
-                                                        user1.get().isActive(),
-                                                        profile);
-
-                                        return ResponseEntity.status(HttpStatus.OK).body(
-                                                        new ApiResult(true, 200, "insert new user successfully",
-                                                                        user2));
-                                }
+                                return ResponseEntity.status(HttpStatus.OK).body(
+                                                new ApiResult(true, 200, "insert new user successfully",
+                                                                userResponse));
                         }
                         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
                                         new ApiResult(false, 404, "Cannot insert new user", null));

@@ -1,5 +1,6 @@
 package com.ahvuit.be_shoeshop.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.ahvuit.be_shoeshop.models.ApiResult;
 import com.ahvuit.be_shoeshop.models.Product;
+import com.ahvuit.be_shoeshop.models.SizeTable;
 import com.ahvuit.be_shoeshop.repositories.ProductRepository;
+import com.ahvuit.be_shoeshop.repositories.SizeTableRepository;
 
 @Service
 public class ProductService {
@@ -19,6 +22,8 @@ public class ProductService {
 
         @Autowired
         private ProductRepository repository;
+        @Autowired
+        private SizeTableRepository sizeTableRepository;
 
         public ResponseEntity<ApiResult> getAllProducts() {
                 try {
@@ -47,11 +52,45 @@ public class ProductService {
                 // 2 products must not have the same name !
                 try {
                         List<Product> foundProducts = repository.findByName(newProduct.getName());
-                        return foundProducts.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(
-                                        new ApiResult(true, 200, "insert new product successfully",
-                                                        repository.save(newProduct)))
-                                        : ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                                                        new ApiResult(false, 404, "product name is already", null));
+                        if (foundProducts.isEmpty()) {
+                                newProduct.setStock(0);
+                                newProduct.setActive(true);
+                                newProduct.setPurchase(0);
+                                newProduct.setProductNew(true);
+                                newProduct.setCreatedDate(new Date());
+                                newProduct.setDateUpdated(new Date());
+                                repository.save(newProduct);
+
+                                SizeTable sizeTable = new SizeTable();
+                                sizeTable.setProductId(newProduct.getProductId());
+                                sizeTable.setS38(0);
+                                sizeTable.setS39(0);
+                                sizeTable.setS40(0);
+                                sizeTable.setS41(0);
+                                sizeTable.setS42(0);
+                                sizeTable.setS43(0);
+                                sizeTable.setS44(0);
+                                sizeTable.setS45(0);
+                                sizeTable.setS46(0);
+                                sizeTable.setS47(0);
+                                sizeTable.setS48(0);
+                                sizeTableRepository.save(sizeTable);
+
+                                Product productResponse = new Product(newProduct.getProductId(), newProduct.getName(),
+                                                newProduct.getDescription(), newProduct.getBrandId(),
+                                                newProduct.getCategoryId(), newProduct.getPrice(),
+                                                newProduct.getRate(), newProduct.getProductNew(),
+                                                newProduct.getPurchase(), newProduct.getStock(), newProduct.getActive(),
+                                                newProduct.getImage(),
+                                                newProduct.getCreatedDate(), newProduct.getDateUpdated(),
+                                                newProduct.getUpdateBy(), sizeTable);
+
+                                return ResponseEntity.status(HttpStatus.OK).body(
+                                                new ApiResult(true, 200, "insert new product successfully",
+                                                                productResponse));
+                        }
+                        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                                        new ApiResult(false, 404, "product name is already", null));
                 } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                                         new ApiResult(false, 400, e.getMessage(), null));
