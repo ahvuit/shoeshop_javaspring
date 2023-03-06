@@ -21,67 +21,91 @@ public class ProductService {
         private ProductRepository repository;
 
         public ResponseEntity<ApiResult> getAllProducts() {
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Query product successfully", repository.findAll()));
+                try {
+                        return ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Query product successfully", repository.findAll()));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
         }
 
         public ResponseEntity<ApiResult> findById(String id) {
-                Optional<Product> foundProduct = repository.findById(id);
-                return foundProduct.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Query product successfully", foundProduct))
-                                : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                                                new ApiResult(false, 404, "Cannot find product", null));
+                try {
+                        Optional<Product> foundProduct = repository.findById(id);
+                        return foundProduct.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Query product successfully", foundProduct))
+                                        : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                                                        new ApiResult(false, 404, "Cannot find product", null));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
         }
 
         public ResponseEntity<ApiResult> insertProduct(Product newProduct) {
                 // 2 products must not have the same name !
-                List<Product> foundProducts = repository.findByName(newProduct.getName());
-                return foundProducts.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "insert new product successfully",
-                                                repository.save(newProduct)))
-                                : ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                                                new ApiResult(false, 404, "Cannot insert new product", null));
+                try {
+                        List<Product> foundProducts = repository.findByName(newProduct.getName());
+                        return foundProducts.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "insert new product successfully",
+                                                        repository.save(newProduct)))
+                                        : ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                                                        new ApiResult(false, 404, "product name is already", null));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
 
         }
 
         public ResponseEntity<ApiResult> updateProduct(Product newProduct, String id) {
-                Product updatedProduct = repository.findById(id)
-                                .map(product -> {
-                                        product.setName(newProduct.getName());
-                                        product.setDescription(newProduct.getDescription());
-                                        product.setBrandId(newProduct.getBrandId());
-                                        product.setCategoryId(newProduct.getCategoryId());
-                                        product.setName(newProduct.getName());
-                                        product.setPrice(newProduct.getPrice());
-                                        product.setRate(newProduct.getPrice());
-                                        product.setProductNew(newProduct.getProductNew());
-                                        product.setName(newProduct.getName());
-                                        product.setActive(newProduct.getActive());
-                                        product.setImage(newProduct.getImage());
-                                        product.setDateUpdated(newProduct.getDateUpdated());
-                                        product.setUpdateBy(newProduct.getUpdateBy());
-                                        return repository.save(product);
-                                }).orElseGet(() -> {
-                                        newProduct.setProductId(id);
-                                        return repository.save(newProduct);
-                                });
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Update Product successfully",
-                                                updatedProduct));
+                try {
+                        Product updatedProduct = repository.findById(id)
+                                        .map(product -> {
+                                                product.setName(newProduct.getName());
+                                                product.setDescription(newProduct.getDescription());
+                                                product.setBrandId(newProduct.getBrandId());
+                                                product.setCategoryId(newProduct.getCategoryId());
+                                                product.setName(newProduct.getName());
+                                                product.setPrice(newProduct.getPrice());
+                                                product.setRate(newProduct.getPrice());
+                                                product.setProductNew(newProduct.getProductNew());
+                                                product.setName(newProduct.getName());
+                                                product.setActive(newProduct.getActive());
+                                                product.setImage(newProduct.getImage());
+                                                product.setDateUpdated(newProduct.getDateUpdated());
+                                                product.setUpdateBy(newProduct.getUpdateBy());
+                                                return repository.save(product);
+                                        }).orElseGet(() -> {
+                                                newProduct.setProductId(id);
+                                                return repository.save(newProduct);
+                                        });
+                        return ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Update Product successfully",
+                                                        updatedProduct));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
         }
 
         public ResponseEntity<ApiResult> deleteProduct(String id) {
-                boolean exists = repository.existsById(id);
-                if (exists) {
-                        repository.deleteById(id);
-                        return ResponseEntity.status(HttpStatus.OK).body(
-                                        new ApiResult(true, 200, "Delete product successfully ",
+                try {
+                        boolean exists = repository.existsById(id);
+                        if (exists) {
+                                repository.deleteById(id);
+                                return ResponseEntity.status(HttpStatus.OK).body(
+                                                new ApiResult(true, 200, "Delete product successfully ",
+                                                                null));
+                        }
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                                        new ApiResult(false, 404, "Cannot find product to delete ",
                                                         null));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
                 }
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                                new ApiResult(false, 404, "Cannot find product to delete ",
-                                                null));
-
         }
 
 }

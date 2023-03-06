@@ -18,29 +18,39 @@ public class ProfileService {
     private ProfileRepository profileRepository;
 
     public ResponseEntity<ApiResult> findByUserId(String id) {
-        Optional<Profile> foundProfile = profileRepository.findByUserId(id);
-        return foundProfile.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResult(true, 200, "Query profile successfully", foundProfile))
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                        new ApiResult(false, 404, "Cannot find profile", null));
+        try {
+            Optional<Profile> foundProfile = profileRepository.findByUserId(id);
+            return foundProfile.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResult(true, 200, "Query profile successfully", foundProfile))
+                    : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                            new ApiResult(false, 404, "Cannot find profile", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResult(false, 400, e.getMessage(), null));
+        }
     }
 
     public ResponseEntity<ApiResult> updateProfile(Profile newProfile, String id) {
-        Profile updatedProfile = profileRepository.findById(id)
-                .map(profile -> {
-                    profile.setFirstName(newProfile.getFirstName());
-                    profile.setLastName(newProfile.getLastName());
-                    profile.setImageUrl(newProfile.getImageUrl());
-                    profile.setPhone(newProfile.getPhone());
-                    profile.setAddress(newProfile.getAddress());
-                    return profileRepository.save(profile);
-                }).orElseGet(() -> {
-                    newProfile.setProfileId(id);
-                    return profileRepository.save(newProfile);
-                });
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResult(true, 200, "Update profile successfully",
-                        updatedProfile));
+        try {
+            Profile updatedProfile = profileRepository.findById(id)
+                    .map(profile -> {
+                        profile.setFirstName(newProfile.getFirstName());
+                        profile.setLastName(newProfile.getLastName());
+                        profile.setImageUrl(newProfile.getImageUrl());
+                        profile.setPhone(newProfile.getPhone());
+                        profile.setAddress(newProfile.getAddress());
+                        return profileRepository.save(profile);
+                    }).orElseGet(() -> {
+                        newProfile.setProfileId(id);
+                        return profileRepository.save(newProfile);
+                    });
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResult(true, 200, "Update profile successfully",
+                            updatedProfile));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResult(false, 400, e.getMessage(), null));
+        }
     }
 
 }

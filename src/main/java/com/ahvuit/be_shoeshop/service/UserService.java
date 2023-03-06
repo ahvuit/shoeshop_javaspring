@@ -1,6 +1,5 @@
 package com.ahvuit.be_shoeshop.service;
 
-import java.io.Console;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,65 +31,86 @@ public class UserService implements UserDetailsService {
         private ProfileRepository profileRepository;
 
         public ResponseEntity<ApiResult> getAllUsers() {
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Query user successfully", userRepository.findAll()));
+                try {
+                        return ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Query user successfully", userRepository.findAll()));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
         }
 
         public ResponseEntity<ApiResult> findById(String id) {
-                Optional<User> foundUser = userRepository.findById(id);
-                return foundUser.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Query user successfully", foundUser))
-                                : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                                                new ApiResult(false, 404, "Cannot find user", null));
+                try {
+                        Optional<User> foundUser = userRepository.findById(id);
+                        return foundUser.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Query user successfully", foundUser))
+                                        : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                                                        new ApiResult(false, 404, "Cannot find user", null));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
         }
 
         public ResponseEntity<ApiResult> insertUser(User user) {
-                Optional<User> foundProducts = userRepository.findByEmail(user.getEmail());
-                if (foundProducts.isEmpty()) {
+                try {
+                        Optional<User> foundProducts = userRepository.findByEmail(user.getEmail());
+                        if (foundProducts.isEmpty()) {
 
-                        user.setPassword(passwordEncoder.encode(user.getPassword()));
-                        user.setUType("USR"); // USR for normal user and ADM for Admin
-                        user.setActive(true);
-                        userRepository.save(user);
+                                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                                user.setUType("USR"); // USR for normal user and ADM for Admin
+                                user.setActive(true);
+                                userRepository.save(user);
 
-                        Optional<User> user1 = userRepository.findByEmail(user.getEmail());
+                                Optional<User> user1 = userRepository.findByEmail(user.getEmail());
 
-                        // Create new profile and add profile to db with userId = user1.getUserId,
-                        // imageUrl = avatar define
-                        Profile profile = new Profile();
-                        profile.setUserId(user1.get().getUserId());
-                        profile.setImageUrl("https://cdn-icons-png.flaticon.com/512/6596/6596121.png");
-                        profileRepository.save(profile);
+                                // Create new profile and add profile to db with userId = user1.getUserId,
+                                // imageUrl = avatar define
+                                if (user1.isPresent()) {
+                                        Profile profile = new Profile();
+                                        profile.setUserId(user1.get().getUserId());
+                                        profile.setImageUrl("https://cdn-icons-png.flaticon.com/512/6596/6596121.png");
+                                        profileRepository.save(profile);
+                                        // Create new user for api json
+                                        User user2 = new User(user1.get().getUserId(), user1.get().getEmail(),
+                                                        user1.get().getPassword(),
+                                                        user1.get().getUType(),
+                                                        user1.get().isActive(),
+                                                        profile);
 
-                        // Create new user for api json
-                        User user2 = new User(user1.get().getUserId(), user1.get().getEmail(),
-                                        user1.get().getPassword(),
-                                        user1.get().getUType(),
-                                        user1.get().isActive(),
-                                        profile);
-
-                        return ResponseEntity.status(HttpStatus.OK).body(
-                                        new ApiResult(true, 200, "insert new user successfully",
-                                                        user2));
+                                        return ResponseEntity.status(HttpStatus.OK).body(
+                                                        new ApiResult(true, 200, "insert new user successfully",
+                                                                        user2));
+                                }
+                        }
+                        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                                        new ApiResult(false, 404, "Cannot insert new user", null));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
                 }
-                return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                                new ApiResult(false, 404, "Cannot insert new user", null));
         }
 
         public ResponseEntity<ApiResult> updateUser(User newUser, String id) {
-                User updatedUser = userRepository.findById(id)
-                                .map(user -> {
-                                        user.setPassword(passwordEncoder.encode(newUser.getPassword()));
-                                        user.setUType(newUser.getUType() == null ? "USR" : newUser.getUType());
-                                        user.setActive(newUser.isActive());
-                                        return userRepository.save(user);
-                                }).orElseGet(() -> {
-                                        newUser.setUserId(id);
-                                        return userRepository.save(newUser);
-                                });
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Update Product successfully",
-                                                updatedUser));
+                try {
+                        User updatedUser = userRepository.findById(id)
+                                        .map(user -> {
+                                                user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+                                                user.setUType(newUser.getUType() == null ? "USR" : newUser.getUType());
+                                                user.setActive(newUser.isActive());
+                                                return userRepository.save(user);
+                                        }).orElseGet(() -> {
+                                                newUser.setUserId(id);
+                                                return userRepository.save(newUser);
+                                        });
+                        return ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Update Product successfully",
+                                                        updatedUser));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
         }
 
         @Override
@@ -98,7 +118,6 @@ public class UserService implements UserDetailsService {
                 Optional<User> user = userRepository.findByEmail(username);
                 return user.map(UserInfoUserDetails::new)
                                 .orElseThrow(() -> new UsernameNotFoundException("user not found" + username));
-
         }
 
 }

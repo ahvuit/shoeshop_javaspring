@@ -18,47 +18,67 @@ public class SalesService {
     private SalesRepository salesRepository;
 
     public ResponseEntity<ApiResult> getAllSales() {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResult(true, 200, "Query status successfully", salesRepository.findAll()));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResult(true, 200, "Query sales successfully", salesRepository.findAll()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResult(false, 400, e.getMessage(), null));
+        }
     }
 
     public ResponseEntity<ApiResult> findById(String id) {
-        return checkStatusId(id) ? ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResult(true, 200, "Query sales successfully", salesRepository.findAll()))
-                : ResponseEntity.status(HttpStatus.OK).body(
-                        new ApiResult(false, 400, "sales is not found", null));
+        try {
+            return checkStatusId(id) ? ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResult(true, 200, "Query sales successfully", salesRepository.findAll()))
+                    : ResponseEntity.status(HttpStatus.OK).body(
+                            new ApiResult(false, 400, "sales is not found", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResult(false, 400, e.getMessage(), null));
+        }
     }
 
     public ResponseEntity<ApiResult> insertSales(Sales sales) {
-        return checkStatusName(sales.getSalesName()) ? ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                new ApiResult(false, 404, "Cannot insert new sales", null))
-                : ResponseEntity.status(HttpStatus.OK).body(
-                        new ApiResult(true, 200, "insert new sales successfully",
-                                salesRepository.save(sales)));
+        try {
+            return checkStatusName(sales.getSalesName()) ? ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new ApiResult(false, 404, "Cannot insert new sales", null))
+                    : ResponseEntity.status(HttpStatus.OK).body(
+                            new ApiResult(true, 200, "insert new sales successfully",
+                                    salesRepository.save(sales)));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResult(false, 400, e.getMessage(), null));
+        }
     }
 
     public ResponseEntity<ApiResult> updateSales(Sales newSales, String id) {
-        Optional<Sales> foundSales = salesRepository.findById(id);
-        if (foundSales.isPresent()) {
-            if (checkStatusName(newSales.getSalesName())) {
+        try {
+            Optional<Sales> foundSales = salesRepository.findById(id);
+            if (foundSales.isPresent()) {
+                if (checkStatusName(newSales.getSalesName())) {
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ApiResult(false, 404, "sales name is already",
+                                    null));
+                }
+                foundSales.get().setSalesName(newSales.getSalesName());
+                foundSales.get().setStartDay(newSales.getStartDay());
+                foundSales.get().setEndDay(newSales.getEndDay());
+                foundSales.get().setContent(newSales.getContent());
+                foundSales.get().setPercent(newSales.getPercent());
+                foundSales.get().setStartDay(newSales.getStartDay());
+                salesRepository.save(foundSales.get());
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ApiResult(false, 404, "salesName is already",
-                                null));
+                        new ApiResult(true, 200, "Update sales successfully",
+                                foundSales.get()));
             }
-            foundSales.get().setSalesName(newSales.getSalesName());
-            foundSales.get().setStartDay(newSales.getStartDay());
-            foundSales.get().setEndDay(newSales.getEndDay());
-            foundSales.get().setContent(newSales.getContent());
-            foundSales.get().setPercent(newSales.getPercent());
-            foundSales.get().setStartDay(newSales.getStartDay());
-            salesRepository.save(foundSales.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResult(true, 200, "Update sales successfully",
-                            foundSales.get()));
+                    new ApiResult(false, 400, "sales is not found",
+                            null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResult(false, 400, e.getMessage(), null));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResult(false, 400, "sales is not found",
-                        null));
 
     }
 

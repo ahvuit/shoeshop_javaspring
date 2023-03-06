@@ -81,7 +81,7 @@ public class OrderService {
                         new ApiResult(true, 200, "Successful payment order", order));
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ApiResult(false, 401, "Cannot find order", null));
+                    new ApiResult(false, 404, "Cannot find order", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResult(false, 400, e.getMessage(), null));
@@ -100,7 +100,7 @@ public class OrderService {
                         new ApiResult(true, 200, "Order has been canceled", foundOrder));
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ApiResult(false, 401, "Cannot find order", null));
+                    new ApiResult(false, 404, "Cannot find order", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResult(false, 400, e.getMessage(), null));
@@ -117,7 +117,7 @@ public class OrderService {
                         new ApiResult(true, 200, "Order has been updated", order));
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ApiResult(false, 401, "Cannot find order", null));
+                    new ApiResult(false, 404, "Cannot find order", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResult(false, 400, e.getMessage(), null));

@@ -21,56 +21,79 @@ public class BrandService {
         private BrandRepository repository;
 
         public ResponseEntity<ApiResult> getAllBrands() {
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Query brand successfully", repository.findAll()));
+                try {
+                        return ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Query brand successfully", repository.findAll()));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
         }
 
         public ResponseEntity<ApiResult> findById(String id) {
-                Optional<Brand> foundBrand = repository.findById(id);
-                return foundBrand.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Query product successfully", foundBrand))
-                                : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                                                new ApiResult(false, 404, "Cannot find product", null));
+                try {
+                        Optional<Brand> foundBrand = repository.findById(id);
+                        return foundBrand.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Query product successfully", foundBrand))
+                                        : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                                                        new ApiResult(false, 404, "Cannot find product", null));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
         }
 
         public ResponseEntity<ApiResult> insertBrand(Brand newBrand) {
-                // 2 products must not have the same name !
-                List<Brand> foundProducts = repository.findByBrandName(newBrand.getBrandName());
-                return foundProducts.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "insert new brand successfully",
-                                                repository.save(newBrand)))
-                                : ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                                                new ApiResult(false, 404, "Cannot insert new brand", null));
-
+                try {
+                        List<Brand> foundProducts = repository.findByBrandName(newBrand.getBrandName());
+                        return foundProducts.isEmpty() ? ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "insert new brand successfully",
+                                                        repository.save(newBrand)))
+                                        : ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                                                        new ApiResult(false, 404, "Cannot insert new brand", null));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
         }
 
         public ResponseEntity<ApiResult> updateBrand(Brand newBrand, String id) {
-                Brand updatedBrand = repository.findById(id)
-                                .map(brand -> {
-                                        brand.setBrandName(newBrand.getBrandName());
-                                        brand.setInformation(newBrand.getInformation());
-                                        brand.setLogo(newBrand.getLogo());
-                                        return repository.save(brand);
-                                }).orElseGet(() -> {
-                                        newBrand.setBrandId(id);
-                                        return repository.save(newBrand);
-                                });
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(true, 200, "Update Product successfully",
-                                                updatedBrand));
+                try {
+                        Brand updatedBrand = repository.findById(id)
+                                        .map(brand -> {
+                                                brand.setBrandName(newBrand.getBrandName());
+                                                brand.setInformation(newBrand.getInformation());
+                                                brand.setLogo(newBrand.getLogo());
+                                                return repository.save(brand);
+                                        }).orElseGet(() -> {
+                                                newBrand.setBrandId(id);
+                                                return repository.save(newBrand);
+                                        });
+                        return ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Update Product successfully",
+                                                        updatedBrand));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
         }
 
         public ResponseEntity<ApiResult> deleteBrand(String id) {
-                boolean exists = repository.existsById(id);
-                if (exists) {
-                        repository.deleteById(id);
-                        return ResponseEntity.status(HttpStatus.OK).body(
-                                        new ApiResult(true, 200, "Delete product successfully ",
+                try {
+                        boolean exists = repository.existsById(id);
+                        if (exists) {
+                                repository.deleteById(id);
+                                return ResponseEntity.status(HttpStatus.OK).body(
+                                                new ApiResult(true, 200, "Delete product successfully ",
+                                                                null));
+                        }
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                                        new ApiResult(false, 404, "Cannot find product to delete ",
                                                         null));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
                 }
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                                new ApiResult(false, 404, "Cannot find product to delete ",
-                                                null));
         }
 
 }

@@ -43,27 +43,36 @@ public class AuthService {
                                                 authRequest.getPassword()));
                 return authentication.isAuthenticated() ? ResponseEntity.status(HttpStatus.OK).body(
                                 new AuthResponse(jwtService.generateToken(authRequest.getUsername())))
-                                : ResponseEntity.status(HttpStatus.OK).body(
+                                : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                                                 null);
         }
 
         public ResponseEntity<ApiResult> login(AuthRequest authRequest) {
-
-                Optional<User> foundProducts = userRepository.findByEmail(authRequest.getUsername());
-                if (foundProducts.isPresent()) {
-                        String token = jwtService.generateToken(authRequest.getUsername());
-                        Optional<Profile> foundProfile = profileRepository
-                                        .findByUserId(foundProducts.get().getUserId());
-                        foundProducts.get().setToken(token);
-                        foundProducts.get().setProfile(foundProfile.isPresent() ? foundProfile.get() : null);
-                        return passwordEncoder.matches(authRequest.getPassword(), foundProducts.get().getPassword())
-                                        ? ResponseEntity.status(HttpStatus.OK).body(
-                                                        new ApiResult(true, 200, "Login Successfully", foundProducts))
-                                        : ResponseEntity.status(HttpStatus.OK).body(
-                                                        new ApiResult(false, 400, "Password is not Invalid", null));
+                try {
+                        Optional<User> foundProducts = userRepository.findByEmail(authRequest.getUsername());
+                        if (foundProducts.isPresent()) {
+                                String token = jwtService.generateToken(authRequest.getUsername());
+                                Optional<Profile> foundProfile = profileRepository
+                                                .findByUserId(foundProducts.get().getUserId());
+                                foundProducts.get().setToken(token);
+                                foundProducts.get().setProfile(foundProfile.isPresent() ? foundProfile.get() : null);
+                                return passwordEncoder.matches(authRequest.getPassword(),
+                                                foundProducts.get().getPassword())
+                                                                ? ResponseEntity.status(HttpStatus.OK).body(
+                                                                                new ApiResult(true, 200,
+                                                                                                "Login Successfully",
+                                                                                                foundProducts))
+                                                                : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                                                                new ApiResult(false, 400,
+                                                                                                "Password is not Invalid",
+                                                                                                null));
+                        }
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                                        new ApiResult(false, 404, "User does not exist", null));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
                 }
-                return ResponseEntity.status(HttpStatus.OK).body(
-                                new ApiResult(false, 400, "User does not exist", null));
 
         }
 }
