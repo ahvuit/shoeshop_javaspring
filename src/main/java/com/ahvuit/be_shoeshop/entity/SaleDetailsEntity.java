@@ -1,6 +1,11 @@
 package com.ahvuit.be_shoeshop.entity;
 
+import org.springframework.data.annotation.Id;
+
 public class SaleDetailsEntity {
+
+    @Id
+    private String id;
     private String salesId;
     private String productId;
     private Double salesPrice;
@@ -15,6 +20,14 @@ public class SaleDetailsEntity {
         this.productId = productId;
         this.salesPrice = salesPrice;
         this.updateBy = updateBy;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSalesId() {

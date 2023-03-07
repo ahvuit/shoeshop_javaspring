@@ -32,7 +32,7 @@ public class SalesService {
         try {
             return checkStatusId(id) ? ResponseEntity.status(HttpStatus.OK).body(
                     new ApiResult(true, 200, "Query sales successfully", salesRepository.findAll()))
-                    : ResponseEntity.status(HttpStatus.OK).body(
+                    : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                             new ApiResult(false, 400, "sales is not found", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
