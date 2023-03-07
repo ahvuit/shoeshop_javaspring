@@ -1,5 +1,6 @@
 package com.ahvuit.be_shoeshop.service;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class SalesService {
 
     public ResponseEntity<ApiResult> insertSales(Sales sales) {
         try {
+            sales.setCreatedDate(new Date());
             return checkStatusName(sales.getSalesName()) ? ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
                     new ApiResult(false, 404, "Cannot insert new sales", null))
                     : ResponseEntity.status(HttpStatus.OK).body(
