@@ -9,9 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.ahvuit.be_shoeshop.entity.Product;
+import com.ahvuit.be_shoeshop.entity.SizeTable;
 import com.ahvuit.be_shoeshop.models.ApiResult;
-import com.ahvuit.be_shoeshop.models.Product;
-import com.ahvuit.be_shoeshop.models.SizeTable;
+import com.ahvuit.be_shoeshop.models.ProductModel;
 import com.ahvuit.be_shoeshop.repositories.ProductRepository;
 import com.ahvuit.be_shoeshop.repositories.SizeTableRepository;
 
@@ -76,7 +77,8 @@ public class ProductService {
                                 sizeTable.setS48(0);
                                 sizeTableRepository.save(sizeTable);
 
-                                Product productResponse = new Product(newProduct.getProductId(), newProduct.getName(),
+                                ProductModel productResponse = new ProductModel(newProduct.getProductId(),
+                                                newProduct.getName(),
                                                 newProduct.getDescription(), newProduct.getBrandId(),
                                                 newProduct.getCategoryId(), newProduct.getPrice(),
                                                 newProduct.getRate(), newProduct.getProductNew(),

@@ -1,8 +1,10 @@
 package com.ahvuit.be_shoeshop.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class SaleDetailsEntity {
+@Document("saleDetails")
+public class SaleDetails {
 
     @Id
     private String id;
@@ -11,11 +13,11 @@ public class SaleDetailsEntity {
     private Double salesPrice;
     private String updateBy;
 
-    public SaleDetailsEntity() {
+    public SaleDetails() {
 
     }
 
-    public SaleDetailsEntity(String salesId, String productId, Double salesPrice, String updateBy) {
+    public SaleDetails(String salesId, String productId, Double salesPrice, String updateBy) {
         this.salesId = salesId;
         this.productId = productId;
         this.salesPrice = salesPrice;

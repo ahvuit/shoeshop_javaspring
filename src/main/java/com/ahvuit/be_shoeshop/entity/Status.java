@@ -1,17 +1,19 @@
 package com.ahvuit.be_shoeshop.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class StatusEntity {
+@Document("status")
+public class Status {
 
     @Id
     private String statusId;
     private String statusName;
 
-    public StatusEntity() {
+    public Status() {
     }
 
-    public StatusEntity(String statusId, String statusName) {
+    public Status(String statusId, String statusName) {
         this.statusId = statusId;
         this.statusName = statusName;
     }

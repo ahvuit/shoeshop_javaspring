@@ -1,6 +1,6 @@
 package com.ahvuit.be_shoeshop.entity;
 
-public class OrderDetailsEntity {
+public class OrderDetails {
 
     private String orderId;
     private String productId;
@@ -9,10 +9,10 @@ public class OrderDetailsEntity {
     private Double price;
     private String total;
 
-    public OrderDetailsEntity() {
+    public OrderDetails() {
     }
 
-    public OrderDetailsEntity(String orderId, String productId, String quantity, String size, Double price,
+    public OrderDetails(String orderId, String productId, String quantity, String size, Double price,
             String total) {
         this.orderId = orderId;
         this.productId = productId;

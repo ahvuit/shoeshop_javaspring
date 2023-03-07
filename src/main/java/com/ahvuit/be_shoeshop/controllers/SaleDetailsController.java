@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ahvuit.be_shoeshop.entity.SaleDetails;
 import com.ahvuit.be_shoeshop.models.ApiResult;
-import com.ahvuit.be_shoeshop.models.SaleDetails;
 import com.ahvuit.be_shoeshop.service.SaleDetailsService;
 
 @RestController

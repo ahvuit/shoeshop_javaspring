@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ahvuit.be_shoeshop.entity.Status;
 import com.ahvuit.be_shoeshop.models.ApiResult;
-import com.ahvuit.be_shoeshop.models.Status;
 import com.ahvuit.be_shoeshop.service.StatusService;
 
 @RestController

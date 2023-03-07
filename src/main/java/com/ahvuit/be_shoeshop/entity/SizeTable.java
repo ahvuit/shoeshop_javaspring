@@ -1,8 +1,10 @@
 package com.ahvuit.be_shoeshop.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class SizeTableEntity {
+@Document("sizeTable")
+public class SizeTable {
     @Id
     private String sizeTableId;
     private Integer s38;
@@ -122,11 +124,11 @@ public class SizeTableEntity {
         this.productId = productId;
     }
 
-    public SizeTableEntity() {
+    public SizeTable() {
 
     }
 
-    public SizeTableEntity(String sizeTableId, Integer s38, Integer s39, Integer s40, Integer s41, Integer s42,
+    public SizeTable(String sizeTableId, Integer s38, Integer s39, Integer s40, Integer s41, Integer s42,
             Integer s43,
             Integer s44, Integer s45, Integer s46, Integer s47, Integer s48, String productId) {
         this.sizeTableId = sizeTableId;

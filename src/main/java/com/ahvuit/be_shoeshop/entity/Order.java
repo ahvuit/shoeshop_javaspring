@@ -3,8 +3,10 @@ package com.ahvuit.be_shoeshop.entity;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class OrderEntity {
+@Document("order")
+public class Order {
 
     @Id
     private String orderId;
@@ -21,10 +23,10 @@ public class OrderEntity {
     private boolean payment;
     private String momo;
 
-    public OrderEntity() {
+    public Order() {
     }
 
-    public OrderEntity(String orderId, String statusId, String userId, String name, String address, String phone,
+    public Order(String orderId, String statusId, String userId, String name, String address, String phone,
             String email, String note, Double total, Date bookingDate, Date deliveryDate, boolean payment,
             String momo) {
         this.orderId = orderId;

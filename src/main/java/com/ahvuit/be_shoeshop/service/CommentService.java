@@ -1,15 +1,14 @@
 package com.ahvuit.be_shoeshop.service;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.ahvuit.be_shoeshop.entity.Comment;
 import com.ahvuit.be_shoeshop.models.ApiResult;
-import com.ahvuit.be_shoeshop.models.Comment;
 import com.ahvuit.be_shoeshop.repositories.CommentRepository;
 
 @Service

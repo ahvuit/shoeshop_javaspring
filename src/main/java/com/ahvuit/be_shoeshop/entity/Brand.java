@@ -1,19 +1,21 @@
 package com.ahvuit.be_shoeshop.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class BrandEntity {
+@Document("brand")
+public class Brand {
     @Id
     private String brandId;
     private String brandName;
     private String information;
     private String logo;
 
-    public BrandEntity() {
+    public Brand() {
 
     }
 
-    public BrandEntity(String brandId, String brandName, String information, String logo) {
+    public Brand(String brandId, String brandName, String information, String logo) {
         this.brandId = brandId;
         this.brandName = brandName;
         this.information = information;

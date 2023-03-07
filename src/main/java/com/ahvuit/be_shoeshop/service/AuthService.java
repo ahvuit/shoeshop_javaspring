@@ -11,11 +11,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ahvuit.be_shoeshop.entity.Profile;
+import com.ahvuit.be_shoeshop.entity.User;
 import com.ahvuit.be_shoeshop.models.ApiResult;
 import com.ahvuit.be_shoeshop.models.AuthRequest;
 import com.ahvuit.be_shoeshop.models.AuthResponse;
-import com.ahvuit.be_shoeshop.models.Profile;
-import com.ahvuit.be_shoeshop.models.User;
+import com.ahvuit.be_shoeshop.models.UserModel;
 import com.ahvuit.be_shoeshop.repositories.ProfileRepository;
 import com.ahvuit.be_shoeshop.repositories.UserRepository;
 
@@ -54,14 +55,16 @@ public class AuthService {
                                 String token = jwtService.generateToken(authRequest.getUsername());
                                 Optional<Profile> foundProfile = profileRepository
                                                 .findByUserId(foundProducts.get().getUserId());
-                                foundProducts.get().setToken(token);
-                                foundProducts.get().setProfile(foundProfile.isPresent() ? foundProfile.get() : null);
+                                UserModel user = new UserModel(foundProducts.get().getUserId(),
+                                                foundProducts.get().getEmail(), foundProducts.get().getPassword(),
+                                                foundProducts.get().getUType(), foundProducts.get().isActive(),
+                                                foundProfile.isPresent() ? foundProfile.get() : null, token);
                                 return passwordEncoder.matches(authRequest.getPassword(),
                                                 foundProducts.get().getPassword())
                                                                 ? ResponseEntity.status(HttpStatus.OK).body(
                                                                                 new ApiResult(true, 200,
                                                                                                 "Login Successfully",
-                                                                                                foundProducts))
+                                                                                                user))
                                                                 : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                                                                                 new ApiResult(false, 400,
                                                                                                 "Password is not Invalid",

@@ -3,8 +3,10 @@ package com.ahvuit.be_shoeshop.entity;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class CommentEntity {
+@Document("comment")
+public class Comment {
     @Id
     private String cmtId;
     private String productId;
@@ -13,10 +15,10 @@ public class CommentEntity {
     private String image;
     private Date createDate;
 
-    public CommentEntity() {
+    public Comment() {
     }
 
-    public CommentEntity(String cmtId, String productId, String userId, String content, String image, Date createDate) {
+    public Comment(String cmtId, String productId, String userId, String content, String image, Date createDate) {
         this.cmtId = cmtId;
         this.productId = productId;
         this.userId = userId;

@@ -1,6 +1,6 @@
 package com.ahvuit.be_shoeshop.config;
 
-import com.ahvuit.be_shoeshop.models.User;
+import com.ahvuit.be_shoeshop.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

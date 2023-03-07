@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.ahvuit.be_shoeshop.entity.Product;
+import com.ahvuit.be_shoeshop.entity.SizeTable;
 import com.ahvuit.be_shoeshop.models.ApiResult;
-import com.ahvuit.be_shoeshop.models.Product;
-import com.ahvuit.be_shoeshop.models.SizeTable;
 import com.ahvuit.be_shoeshop.repositories.ProductRepository;
 import com.ahvuit.be_shoeshop.repositories.SizeTableRepository;
 

@@ -3,8 +3,10 @@ package com.ahvuit.be_shoeshop.entity;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class ProductEntity {
+@Document("product")
+public class Product {
 
     @Id
     private String productId;
@@ -23,10 +25,10 @@ public class ProductEntity {
     private Date dateUpdated;
     private Integer updateBy;
 
-    public ProductEntity() {
+    public Product() {
     }
 
-    public ProductEntity(String productId, String name, String description, Integer brandId, Integer categoryId,
+    public Product(String productId, String name, String description, Integer brandId, Integer categoryId,
             Float price, Float rate, Boolean productNew, Integer purchase, Integer stock, Boolean active, String image,
             Date createdDate, Date dateUpdated, Integer updateBy) {
         this.productId = productId;

@@ -12,9 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ahvuit.be_shoeshop.config.UserInfoUserDetails;
+import com.ahvuit.be_shoeshop.entity.Profile;
+import com.ahvuit.be_shoeshop.entity.User;
 import com.ahvuit.be_shoeshop.models.ApiResult;
-import com.ahvuit.be_shoeshop.models.Profile;
-import com.ahvuit.be_shoeshop.models.User;
+import com.ahvuit.be_shoeshop.models.UserModel;
 import com.ahvuit.be_shoeshop.repositories.ProfileRepository;
 import com.ahvuit.be_shoeshop.repositories.UserRepository;
 
@@ -67,8 +68,8 @@ public class UserService implements UserDetailsService {
                                 profile.setUserId(user.getUserId());
                                 profile.setImageUrl("https://cdn-icons-png.flaticon.com/512/6596/6596121.png");
                                 profileRepository.save(profile);
-                                // Create new user for api json
-                                User userResponse = new User(user.getUserId(), user.getEmail(),
+
+                                UserModel userResponse = new UserModel(user.getUserId(), user.getEmail(),
                                                 user.getPassword(),
                                                 user.getUType(),
                                                 user.isActive(),

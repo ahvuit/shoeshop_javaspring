@@ -8,11 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.ahvuit.be_shoeshop.entity.Order;
+import com.ahvuit.be_shoeshop.entity.OrderDetails;
+import com.ahvuit.be_shoeshop.entity.Status;
 import com.ahvuit.be_shoeshop.models.ApiResult;
-import com.ahvuit.be_shoeshop.models.Order;
-import com.ahvuit.be_shoeshop.models.OrderDetails;
 import com.ahvuit.be_shoeshop.models.OrderOrderDetails;
-import com.ahvuit.be_shoeshop.models.Status;
 import com.ahvuit.be_shoeshop.repositories.OrderDetailsRepository;
 import com.ahvuit.be_shoeshop.repositories.OrderRepository;
 import com.ahvuit.be_shoeshop.repositories.StatusRepository;

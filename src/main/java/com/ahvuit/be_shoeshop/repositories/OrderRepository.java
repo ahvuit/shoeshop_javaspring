@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ahvuit.be_shoeshop.models.Order;
+import com.ahvuit.be_shoeshop.entity.Order;
 
 public interface OrderRepository extends MongoRepository<Order, String> {
     List<Order> getOrderByUserId(String userId);

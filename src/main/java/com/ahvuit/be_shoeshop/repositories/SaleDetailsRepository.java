@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.ahvuit.be_shoeshop.models.SaleDetails;
+import com.ahvuit.be_shoeshop.entity.SaleDetails;
 
 public interface SaleDetailsRepository extends MongoRepository<SaleDetails, String> {
     Optional<SaleDetails> getSaleDetailsBySalesId(String salesId);

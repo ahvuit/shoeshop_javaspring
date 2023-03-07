@@ -1,8 +1,10 @@
 package com.ahvuit.be_shoeshop.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class UserEntity {
+@Document("user")
+public class User {
     @Id
     private String userId;
     private String email;
@@ -10,10 +12,10 @@ public class UserEntity {
     private String uType;
     private boolean active;
 
-    public UserEntity() {
+    public User() {
     }
 
-    public UserEntity(String userId, String email, String password, String uType, boolean active) {
+    public User(String userId, String email, String password, String uType, boolean active) {
         this.userId = userId;
         this.email = email;
         this.password = password;

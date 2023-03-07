@@ -2,6 +2,9 @@ package com.ahvuit.be_shoeshop.models;
 
 import java.util.List;
 
+import com.ahvuit.be_shoeshop.entity.Order;
+import com.ahvuit.be_shoeshop.entity.OrderDetails;
+
 public class OrderOrderDetails {
     private Order order;
     private List<OrderDetails> listOrderDetails;

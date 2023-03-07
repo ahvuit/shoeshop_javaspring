@@ -1,8 +1,10 @@
 package com.ahvuit.be_shoeshop.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class ProfileEntity {
+@Document("profile")
+public class Profile {
 
     @Id
     private String profileId;
@@ -13,11 +15,11 @@ public class ProfileEntity {
     private String imageUrl;
     private String userId;
 
-    public ProfileEntity() {
+    public Profile() {
 
     }
 
-    public ProfileEntity(String profileId, String firstName, String lastName, String address, String phone,
+    public Profile(String profileId, String firstName, String lastName, String address, String phone,
             String imageUrl, String userId) {
         this.profileId = profileId;
         this.firstName = firstName;

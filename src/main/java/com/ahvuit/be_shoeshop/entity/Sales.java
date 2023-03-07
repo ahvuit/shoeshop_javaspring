@@ -1,10 +1,11 @@
 package com.ahvuit.be_shoeshop.entity;
 
 import java.util.Date;
-
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class SalesEntity {
+@Document("sales")
+public class Sales {
     @Id
     private String salesId;
     private String salesName;
@@ -14,11 +15,11 @@ public class SalesEntity {
     private Date endDay;
     private Date createdDate;
 
-    public SalesEntity() {
+    public Sales() {
 
     }
 
-    public SalesEntity(String salesId, String salesName, String content, Double percent, Date startDay, Date endDay,
+    public Sales(String salesId, String salesName, String content, Double percent, Date startDay, Date endDay,
             Date createdDate) {
         this.salesId = salesId;
         this.salesName = salesName;
