@@ -9,17 +9,17 @@ public class User {
     private String userId;
     private String email;
     private String password;
-    private String uType;
+    private String utype;
     private boolean active;
 
     public User() {
     }
 
-    public User(String userId, String email, String password, String uType, boolean active) {
+    public User(String userId, String email, String password, String utype, boolean active) {
         this.userId = userId;
         this.email = email;
         this.password = password;
-        this.uType = uType;
+        this.utype = utype;
         this.active = active;
     }
 
@@ -48,11 +48,11 @@ public class User {
     }
 
     public String getUType() {
-        return uType;
+        return utype;
     }
 
-    public void setUType(String uType) {
-        this.uType = uType;
+    public void setUType(String utype) {
+        this.utype = utype;
     }
 
     public boolean isActive() {

@@ -26,6 +26,9 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthFilter authFilter;
 
+    @Autowired
+    private AccessTokenEntryPoint accessTokenEntryPoint;
+
     @Bean
     // authentication
     public UserDetailsService userDetailsService() {
@@ -34,7 +37,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
+        return http.csrf().disable().exceptionHandling().authenticationEntryPoint(accessTokenEntryPoint).and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/authenticate", "/api/register", "/api/login", "/api/getAllProducts",
                         "/api/getAllBrands", "/api/getAllComments", "/api/getProductDetails", "/api/getAllSaleDetails",
@@ -43,9 +49,6 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/**")
                 .authenticated().and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

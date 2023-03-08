@@ -39,20 +39,25 @@ public class AuthService {
         private PasswordEncoder passwordEncoder;
 
         public ResponseEntity<AuthResponse> authenticate(AuthRequest authRequest) {
-                Authentication authentication = authenticationManager.authenticate(
-                                new UsernamePasswordAuthenticationToken(authRequest.getUsername(),
-                                                authRequest.getPassword()));
-                return authentication.isAuthenticated() ? ResponseEntity.status(HttpStatus.OK).body(
-                                new AuthResponse(jwtService.generateToken(authRequest.getUsername())))
-                                : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                                                null);
+                try {
+                        Authentication authentication = authenticationManager.authenticate(
+                                        new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
+                                                        authRequest.getPassword()));
+                        return authentication.isAuthenticated() ? ResponseEntity.status(HttpStatus.OK).body(
+                                        new AuthResponse(jwtService.generateToken(authRequest.getEmail())))
+                                        : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                                        new AuthResponse(null));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new AuthResponse(null));
+                }
         }
 
         public ResponseEntity<ApiResult> login(AuthRequest authRequest) {
                 try {
-                        Optional<User> foundProducts = userRepository.findByEmail(authRequest.getUsername());
+                        Optional<User> foundProducts = userRepository.findByEmail(authRequest.getEmail());
                         if (foundProducts.isPresent()) {
-                                String token = jwtService.generateToken(authRequest.getUsername());
+                                String token = jwtService.generateToken(authRequest.getEmail());
                                 Optional<Profile> foundProfile = profileRepository
                                                 .findByUserId(foundProducts.get().getUserId());
                                 UserModel user = new UserModel(foundProducts.get().getUserId(),
