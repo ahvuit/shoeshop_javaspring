@@ -1,7 +1,9 @@
 package com.ahvuit.be_shoeshop.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document("searchHistory")
 public class SearchHistory {
     @Id
     private String searchId;

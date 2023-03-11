@@ -28,7 +28,6 @@ public class SearchHistoryService {
                     .getSearchHistoryByUserId(newKeyword.getUserId());
             if (insertOrUpdateKeyword.isPresent()) {
                 insertOrUpdateKeyword.get().setKeyword(newKeyword.getKeyword());
-                searchHistoryRepository.save(insertOrUpdateKeyword.get());
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ApiResult(true, 200, "Successfully",
                                 searchHistoryRepository.save(insertOrUpdateKeyword.get())));

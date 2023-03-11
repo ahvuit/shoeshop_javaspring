@@ -58,17 +58,20 @@ public class SalesService {
         try {
             Optional<Sales> foundSales = salesRepository.findById(id);
             if (foundSales.isPresent()) {
-                if (checkStatusName(newSales.getSalesName())) {
-                    return ResponseEntity.status(HttpStatus.OK).body(
-                            new ApiResult(false, 404, "sales name is already",
-                                    null));
-                }
-                foundSales.get().setSalesName(newSales.getSalesName());
-                foundSales.get().setStartDay(newSales.getStartDay());
-                foundSales.get().setEndDay(newSales.getEndDay());
-                foundSales.get().setContent(newSales.getContent());
-                foundSales.get().setPercent(newSales.getPercent());
-                foundSales.get().setStartDay(newSales.getStartDay());
+                foundSales.get()
+                        .setSalesName((newSales.getSalesName() != null || newSales.getSalesName().equals(""))
+                                ? newSales.getSalesName()
+                                : foundSales.get().getSalesName());
+                foundSales.get().setStartDay(
+                        newSales.getStartDay() != null ? newSales.getStartDay() : foundSales.get().getStartDay());
+                foundSales.get()
+                        .setEndDay(newSales.getEndDay() != null ? newSales.getEndDay() : foundSales.get().getEndDay());
+                foundSales.get().setContent(
+                        newSales.getContent() != null ? newSales.getContent() : foundSales.get().getContent());
+                foundSales.get().setPercent(
+                        newSales.getPercent() != null ? newSales.getPercent() : foundSales.get().getPercent());
+                foundSales.get()
+                        .setBanner(newSales.getBanner() != null ? newSales.getBanner() : foundSales.get().getBanner());
                 salesRepository.save(foundSales.get());
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ApiResult(true, 200, "Update sales successfully",

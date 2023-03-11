@@ -1,5 +1,8 @@
 package com.ahvuit.be_shoeshop.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("orderDetails")
 public class OrderDetails {
 
     private String orderId;

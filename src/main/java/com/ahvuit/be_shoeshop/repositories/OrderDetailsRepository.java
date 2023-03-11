@@ -8,4 +8,6 @@ import com.ahvuit.be_shoeshop.entity.OrderDetails;
 
 public interface OrderDetailsRepository extends MongoRepository<OrderDetails, String> {
     List<OrderDetails> getOrderDetailsByOrderId(String orderId);
+
+    List<OrderDetails> getOrderDetailsByProductId(String productId);
 }

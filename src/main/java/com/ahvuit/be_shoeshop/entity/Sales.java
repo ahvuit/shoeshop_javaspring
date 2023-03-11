@@ -11,20 +11,21 @@ public class Sales {
     private String salesName;
     private String content;
     private Double percent;
+    private String banner;
     private Date startDay;
     private Date endDay;
     private Date createdDate;
 
     public Sales() {
-
     }
 
-    public Sales(String salesId, String salesName, String content, Double percent, Date startDay, Date endDay,
-            Date createdDate) {
+    public Sales(String salesId, String salesName, String content, Double percent, String banner, Date startDay,
+            Date endDay, Date createdDate) {
         this.salesId = salesId;
         this.salesName = salesName;
         this.content = content;
         this.percent = percent;
+        this.banner = banner;
         this.startDay = startDay;
         this.endDay = endDay;
         this.createdDate = createdDate;
@@ -60,6 +61,14 @@ public class Sales {
 
     public void setPercent(Double percent) {
         this.percent = percent;
+    }
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
     }
 
     public Date getStartDay() {
