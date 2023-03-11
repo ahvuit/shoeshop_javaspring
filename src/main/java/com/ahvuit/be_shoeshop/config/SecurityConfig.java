@@ -44,7 +44,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/authenticate", "/api/register", "/api/login", "/api/getAllProducts",
                         "/api/getAllBrands", "/api/getAllComments", "/api/getProductDetails", "/api/getAllSaleDetails",
-                        "/api/getAllSales", "/api/getSaleDetailsBySalesId")
+                        "/api/getAllSales", "/api/getSaleDetailsBySalesId",
+                        "/api/getAllComments/{id}", "/api/getAllCategories")
                 .permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/**")

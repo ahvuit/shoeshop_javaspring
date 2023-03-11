@@ -3,6 +3,7 @@ package com.ahvuit.be_shoeshop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +18,9 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @GetMapping("/api/getAllComments")
-    ResponseEntity<ApiResult> getAllComments() {
-        return commentService.getAllComments();
+    @GetMapping("/api/getAllComments/{id}")
+    ResponseEntity<ApiResult> getAllComments(@PathVariable String id) {
+        return commentService.getAllComments(id);
     }
 
     @PostMapping("/api/insertComment")
