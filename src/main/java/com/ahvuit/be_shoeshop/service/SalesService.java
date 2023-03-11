@@ -33,7 +33,7 @@ public class SalesService {
             return checkStatusId(id) ? ResponseEntity.status(HttpStatus.OK).body(
                     new ApiResult(true, 200, "Query sales successfully", salesRepository.findAll()))
                     : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                            new ApiResult(false, 400, "sales is not found", null));
+                            new ApiResult(false, 401, "sales is not found", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResult(false, 400, e.getMessage(), null));
@@ -75,7 +75,7 @@ public class SalesService {
                                 foundSales.get()));
             }
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResult(false, 400, "sales is not found",
+                    new ApiResult(false, 401, "sales is not found",
                             null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(

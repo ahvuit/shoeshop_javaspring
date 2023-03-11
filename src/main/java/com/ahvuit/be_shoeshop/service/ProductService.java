@@ -1,5 +1,6 @@
 package com.ahvuit.be_shoeshop.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -9,12 +10,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.ahvuit.be_shoeshop.entity.Brand;
+import com.ahvuit.be_shoeshop.entity.Category;
 import com.ahvuit.be_shoeshop.entity.Product;
+import com.ahvuit.be_shoeshop.entity.SaleDetails;
+import com.ahvuit.be_shoeshop.entity.Sales;
 import com.ahvuit.be_shoeshop.entity.SizeTable;
 import com.ahvuit.be_shoeshop.models.ApiResult;
 import com.ahvuit.be_shoeshop.models.ProductModel;
+import com.ahvuit.be_shoeshop.repositories.BrandRepository;
 import com.ahvuit.be_shoeshop.repositories.ProductRepository;
+import com.ahvuit.be_shoeshop.repositories.SaleDetailsRepository;
+import com.ahvuit.be_shoeshop.repositories.SalesRepository;
 import com.ahvuit.be_shoeshop.repositories.SizeTableRepository;
+import com.ahvuit.be_shoeshop.repositories.CategoryRepository;
 
 @Service
 public class ProductService {
@@ -25,11 +34,51 @@ public class ProductService {
         private ProductRepository repository;
         @Autowired
         private SizeTableRepository sizeTableRepository;
+        @Autowired
+        private BrandRepository brandRepository;
+        @Autowired
+        private CategoryRepository categoryRepository;
+        @Autowired
+        private SalesRepository salesRepository;
+        @Autowired
+        private SaleDetailsRepository saleDetailsRepository;
 
         public ResponseEntity<ApiResult> getAllProducts() {
                 try {
+                        List<Product> products = repository.findAll();
+                        List<ProductModel> lModels = new ArrayList<ProductModel>();
+
+                        for (Product product : products) {
+                                Sales sales = null;
+                                Optional<Brand> brand = brandRepository.findById(product.getBrandId());
+                                Optional<Category> category = categoryRepository.findById(product.getCategoryId());
+                                SizeTable sizeTable = sizeTableRepository
+                                                .getSizeTableByProductId(product.getProductId());
+                                Optional<SaleDetails> salesDetails = saleDetailsRepository
+                                                .getSaleDetailsByProductId(product.getProductId());
+                                if (salesDetails.isPresent()) {
+                                        Optional<Sales> findSales = salesRepository
+                                                        .findById(salesDetails.get().getSalesId());
+                                        if (findSales.isPresent()) {
+                                                sales = findSales.get();
+                                        }
+                                }
+                                ProductModel productResponse = new ProductModel(product.getProductId(),
+                                                product.getName(),
+                                                product.getDescription(), product.getBrandId(),
+                                                product.getCategoryId(), product.getPrice(),
+                                                product.getRate(), product.getProductNew(),
+                                                product.getPurchase(), product.getStock(), product.getActive(),
+                                                product.getImage(),
+                                                product.getCreatedDate(), product.getDateUpdated(),
+                                                product.getUpdateBy(), sizeTable,
+                                                sales,
+                                                brand.isPresent() ? brand.get().getBrandName() : "",
+                                                category.isPresent() ? category.get().getCategoryName() : "");
+                                lModels.add(productResponse);
+                        }
                         return ResponseEntity.status(HttpStatus.OK).body(
-                                        new ApiResult(true, 200, "Query product successfully", repository.findAll()));
+                                        new ApiResult(true, 200, "Query product successfully", lModels));
                 } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                                         new ApiResult(false, 400, e.getMessage(), null));
@@ -77,6 +126,9 @@ public class ProductService {
                                 sizeTable.setS48(0);
                                 sizeTableRepository.save(sizeTable);
 
+                                Optional<Brand> brand = brandRepository.findById(newProduct.getBrandId());
+                                Optional<Category> category = categoryRepository.findById(newProduct.getCategoryId());
+
                                 ProductModel productResponse = new ProductModel(newProduct.getProductId(),
                                                 newProduct.getName(),
                                                 newProduct.getDescription(), newProduct.getBrandId(),
@@ -85,7 +137,9 @@ public class ProductService {
                                                 newProduct.getPurchase(), newProduct.getStock(), newProduct.getActive(),
                                                 newProduct.getImage(),
                                                 newProduct.getCreatedDate(), newProduct.getDateUpdated(),
-                                                newProduct.getUpdateBy(), sizeTable);
+                                                newProduct.getUpdateBy(), sizeTable,
+                                                brand.isPresent() ? brand.get().getBrandName() : "",
+                                                category.isPresent() ? category.get().getCategoryName() : "");
 
                                 return ResponseEntity.status(HttpStatus.OK).body(
                                                 new ApiResult(true, 200, "insert new product successfully",

@@ -34,9 +34,9 @@ public class BrandService {
                 try {
                         Optional<Brand> foundBrand = repository.findById(id);
                         return foundBrand.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
-                                        new ApiResult(true, 200, "Query product successfully", foundBrand))
+                                        new ApiResult(true, 200, "Query brand successfully", foundBrand))
                                         : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                                                        new ApiResult(false, 404, "Cannot find product", null));
+                                                        new ApiResult(false, 404, "Cannot find brand", null));
                 } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                                         new ApiResult(false, 400, e.getMessage(), null));
@@ -50,7 +50,7 @@ public class BrandService {
                                         new ApiResult(true, 200, "insert new brand successfully",
                                                         repository.save(newBrand)))
                                         : ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                                                        new ApiResult(false, 404, "Cannot insert new brand", null));
+                                                        new ApiResult(false, 404, "Brand name is already", null));
                 } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                                         new ApiResult(false, 400, e.getMessage(), null));
@@ -70,7 +70,7 @@ public class BrandService {
                                                 return repository.save(newBrand);
                                         });
                         return ResponseEntity.status(HttpStatus.OK).body(
-                                        new ApiResult(true, 200, "Update Product successfully",
+                                        new ApiResult(true, 200, "Update brand successfully",
                                                         updatedBrand));
                 } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -84,11 +84,11 @@ public class BrandService {
                         if (exists) {
                                 repository.deleteById(id);
                                 return ResponseEntity.status(HttpStatus.OK).body(
-                                                new ApiResult(true, 200, "Delete product successfully ",
+                                                new ApiResult(true, 200, "Delete brand successfully ",
                                                                 null));
                         }
                         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                                        new ApiResult(false, 404, "Cannot find product to delete ",
+                                        new ApiResult(false, 404, "Cannot find brand to delete ",
                                                         null));
                 } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(

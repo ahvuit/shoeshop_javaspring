@@ -12,8 +12,8 @@ public class Product {
     private String productId;
     private String name;
     private String description;
-    private Integer brandId;
-    private Integer categoryId;
+    private String brandId;
+    private String categoryId;
     private Float price;
     private Float rate;
     private Boolean productNew;
@@ -28,7 +28,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String productId, String name, String description, Integer brandId, Integer categoryId,
+    public Product(String productId, String name, String description, String brandId, String categoryId,
             Float price, Float rate, Boolean productNew, Integer purchase, Integer stock, Boolean active, String image,
             Date createdDate, Date dateUpdated, Integer updateBy) {
         this.productId = productId;
@@ -72,19 +72,19 @@ public class Product {
         this.description = description;
     }
 
-    public Integer getBrandId() {
+    public String getBrandId() {
         return brandId;
     }
 
-    public void setBrandId(Integer brandId) {
+    public void setBrandId(String brandId) {
         this.brandId = brandId;
     }
 
-    public Integer getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 
