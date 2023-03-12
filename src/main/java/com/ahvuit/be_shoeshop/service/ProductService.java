@@ -88,10 +88,40 @@ public class ProductService {
         public ResponseEntity<ApiResult> findById(String id) {
                 try {
                         Optional<Product> foundProduct = repository.findById(id);
-                        return foundProduct.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
-                                        new ApiResult(true, 200, "Query product successfully", foundProduct))
-                                        : ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                                                        new ApiResult(false, 404, "Cannot find product", null));
+                        if (foundProduct.isPresent()) {
+                                Product product = foundProduct.get();
+                                Sales sales = null;
+                                Optional<Brand> brand = brandRepository.findById(product.getBrandId());
+                                Optional<Category> category = categoryRepository.findById(product.getCategoryId());
+                                SizeTable sizeTable = sizeTableRepository
+                                                .getSizeTableByProductId(product.getProductId());
+                                Optional<SaleDetails> salesDetails = saleDetailsRepository
+                                                .getSaleDetailsByProductId(product.getProductId());
+                                if (salesDetails.isPresent()) {
+                                        Optional<Sales> findSales = salesRepository
+                                                        .findById(salesDetails.get().getSalesId());
+                                        if (findSales.isPresent()) {
+                                                sales = findSales.get();
+                                        }
+                                }
+                                ProductModel productResponse = new ProductModel(product.getProductId(),
+                                                product.getName(),
+                                                product.getDescription(), product.getBrandId(),
+                                                product.getCategoryId(), product.getPrice(),
+                                                product.getRate(), product.getProductNew(),
+                                                product.getPurchase(), product.getStock(), product.getActive(),
+                                                product.getImage(),
+                                                product.getCreatedDate(), product.getDateUpdated(),
+                                                product.getUpdateBy(), sizeTable,
+                                                sales,
+                                                brand.isPresent() ? brand.get().getBrandName() : "",
+                                                category.isPresent() ? category.get().getCategoryName() : "");
+                                return ResponseEntity.status(HttpStatus.OK).body(
+                                                new ApiResult(true, 200, "Query product successfully",
+                                                                productResponse));
+                        }
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                                        new ApiResult(false, 404, "Cannot find product", null));
                 } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                                         new ApiResult(false, 400, e.getMessage(), null));
