@@ -2,6 +2,7 @@ package com.ahvuit.be_shoeshop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import com.ahvuit.be_shoeshop.service.ProductService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+@CrossOrigin("http://localhost:8081")
 @RestController
 public class ProductController {
 
@@ -24,7 +26,6 @@ public class ProductController {
 
     @GetMapping("/api/getAllProducts")
     ResponseEntity<ApiResult> getAllProducts(HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
         return productService.getAllProducts();
     }
 
@@ -34,13 +35,14 @@ public class ProductController {
     }
 
     @PostMapping("/api/insertProduct")
-    ResponseEntity<ApiResult> insertProduct(@RequestBody Product product) {
-        // 2 products must not have the same name !
+    ResponseEntity<ApiResult> insertProduct(HttpServletResponse response,
+            @RequestBody Product product) {
         return productService.insertProduct(product);
     }
 
     @PutMapping("/api/updateProduct/{id}")
-    public ResponseEntity<ApiResult> updateProduct(@RequestBody Product product, @PathVariable String id) {
+    public ResponseEntity<ApiResult> updateProduct(@RequestBody Product product,
+            @PathVariable String id) {
         return productService.updateProduct(product, id);
     }
 
