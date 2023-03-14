@@ -60,7 +60,7 @@ public class UserService implements UserDetailsService {
                         if (foundProducts.isEmpty()) {
 
                                 user.setPassword(passwordEncoder.encode(user.getPassword()));
-                                user.setUType("USR"); // USR for normal user and ADM for Admin
+                                user.setUtype("USR"); // USR for normal user and ADM for Admin
                                 user.setActive(true);
                                 userRepository.save(user);
 
@@ -71,7 +71,7 @@ public class UserService implements UserDetailsService {
 
                                 UserModel userResponse = new UserModel(user.getUserId(), user.getEmail(),
                                                 user.getPassword(),
-                                                user.getUType(),
+                                                user.getUtype(),
                                                 user.isActive(),
                                                 profile);
 
@@ -92,7 +92,7 @@ public class UserService implements UserDetailsService {
                         User updatedUser = userRepository.findById(id)
                                         .map(user -> {
                                                 user.setPassword(passwordEncoder.encode(newUser.getPassword()));
-                                                user.setUType(newUser.getUType() == null ? "USR" : newUser.getUType());
+                                                user.setUtype(newUser.getUtype() == null ? "USR" : newUser.getUtype());
                                                 user.setActive(newUser.isActive());
                                                 return userRepository.save(user);
                                         }).orElseGet(() -> {

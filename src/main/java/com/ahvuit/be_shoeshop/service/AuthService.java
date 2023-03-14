@@ -62,7 +62,7 @@ public class AuthService {
                                                 .findByUserId(foundProducts.get().getUserId());
                                 UserModel user = new UserModel(foundProducts.get().getUserId(),
                                                 foundProducts.get().getEmail(), foundProducts.get().getPassword(),
-                                                foundProducts.get().getUType(), foundProducts.get().isActive(),
+                                                foundProducts.get().getUtype(), foundProducts.get().isActive(),
                                                 foundProfile.isPresent() ? foundProfile.get() : null, token);
                                 return passwordEncoder.matches(authRequest.getPassword(),
                                                 foundProducts.get().getPassword())

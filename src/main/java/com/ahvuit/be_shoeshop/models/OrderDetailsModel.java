@@ -7,8 +7,8 @@ public class OrderDetailsModel extends OrderDetails {
     public OrderDetailsModel() {
     }
 
-    public OrderDetailsModel(String orderId, String productId, String quantity, String size, Double price,
-            String total) {
+    public OrderDetailsModel(String orderId, String productId, Integer quantity, String size, Double price,
+            Double total) {
         super(orderId, productId, quantity, size, price, total);
     }
 

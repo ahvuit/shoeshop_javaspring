@@ -2,31 +2,16 @@ package com.ahvuit.be_shoeshop.models;
 
 import java.util.List;
 
-import com.ahvuit.be_shoeshop.entity.Order;
 import com.ahvuit.be_shoeshop.entity.OrderDetails;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderOrderDetails {
-    private Order order;
+    private OrderModel orderModel;
     private List<OrderDetails> listOrderDetails;
-
-    public OrderOrderDetails(Order order, List<OrderDetails> listOrderDetails) {
-        this.order = order;
-        this.listOrderDetails = listOrderDetails;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public List<OrderDetails> getListOrderDetails() {
-        return listOrderDetails;
-    }
-
-    public void setListOrderDetails(List<OrderDetails> listOrderDetails) {
-        this.listOrderDetails = listOrderDetails;
-    }
 }

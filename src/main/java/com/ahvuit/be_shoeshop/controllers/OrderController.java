@@ -33,6 +33,11 @@ public class OrderController {
         return orderService.findById(id);
     }
 
+    @GetMapping("/api/getOrderByUserId/{id}")
+    ResponseEntity<ApiResult> findByUserId(@PathVariable String id) {
+        return orderService.findByUserId(id);
+    }
+
     @PostMapping("/api/insertOrder")
     ResponseEntity<ApiResult> insertOrder(@RequestBody OrderOrderDetails orders) {
         return orderService.insertOrder(orders);
