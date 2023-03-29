@@ -1,5 +1,6 @@
 package com.ahvuit.be_shoeshop.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,9 @@ public class SaleDetailsService {
 
     public ResponseEntity<ApiResult> findById(String id) {
         try {
-            Optional<SaleDetails> saleDetails = saleDetailsRepository.getSaleDetailsBySalesId(id);
-            return saleDetails.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResult(true, 200, "Query Successfully", saleDetails))
-                    : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                            new ApiResult(false, 400, "not found", null));
+            List<SaleDetails> saleDetails = saleDetailsRepository.getSaleDetailsBySalesId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResult(true, 200, "Query Successfully", saleDetails));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResult(false, 400, e.getMessage(), null));

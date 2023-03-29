@@ -1,5 +1,6 @@
 package com.ahvuit.be_shoeshop.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -7,7 +8,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.ahvuit.be_shoeshop.entity.SaleDetails;
 
 public interface SaleDetailsRepository extends MongoRepository<SaleDetails, String> {
-    Optional<SaleDetails> getSaleDetailsBySalesId(String salesId);
+    List<SaleDetails> getSaleDetailsBySalesId(String salesId);
 
     Optional<SaleDetails> getSaleDetailsByProductId(String productId);
 }

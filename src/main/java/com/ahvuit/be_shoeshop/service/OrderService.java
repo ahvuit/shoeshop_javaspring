@@ -17,6 +17,7 @@ import com.ahvuit.be_shoeshop.entity.Status;
 import com.ahvuit.be_shoeshop.models.ApiResult;
 import com.ahvuit.be_shoeshop.models.OrderModel;
 import com.ahvuit.be_shoeshop.models.OrderOrderDetails;
+import com.ahvuit.be_shoeshop.repositories.MonthlyRevenueDetailsRepository;
 import com.ahvuit.be_shoeshop.repositories.OrderDetailsRepository;
 import com.ahvuit.be_shoeshop.repositories.OrderRepository;
 import com.ahvuit.be_shoeshop.repositories.StatusRepository;
@@ -30,6 +31,8 @@ public class OrderService {
     private OrderDetailsRepository orderDetailsRepository;
     @Autowired
     private StatusRepository statusRepository;
+    @Autowired
+    private MonthlyRevenueDetailsRepository monthlyRevenueDetailsRepository;
 
     public ResponseEntity<ApiResult> getAllOrders() {
         try {
@@ -96,6 +99,10 @@ public class OrderService {
             Date date = new Date();
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
+
+            Integer year = cal.get(Calendar.YEAR);
+            Integer month = cal.get(Calendar.MONTH);
+
             cal.add(Calendar.DATE, 3);
 
             List<Status> status = statusRepository.findAll();
