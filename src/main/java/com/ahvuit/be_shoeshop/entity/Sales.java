@@ -23,4 +23,8 @@ public class Sales {
     private Date endDay;
     private Date createdDate;
 
+    public Sales(String salesId) {
+        this.salesId = salesId;
+    }
+
 }

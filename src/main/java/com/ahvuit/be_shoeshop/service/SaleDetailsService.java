@@ -1,5 +1,7 @@
 package com.ahvuit.be_shoeshop.service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +14,7 @@ import com.ahvuit.be_shoeshop.entity.Product;
 import com.ahvuit.be_shoeshop.entity.SaleDetails;
 import com.ahvuit.be_shoeshop.entity.Sales;
 import com.ahvuit.be_shoeshop.models.ApiResult;
+import com.ahvuit.be_shoeshop.models.SalesModel;
 import com.ahvuit.be_shoeshop.repositories.ProductRepository;
 import com.ahvuit.be_shoeshop.repositories.SaleDetailsRepository;
 import com.ahvuit.be_shoeshop.repositories.SalesRepository;
@@ -36,25 +39,68 @@ public class SaleDetailsService {
         }
     }
 
-    public ResponseEntity<ApiResult> insertSalesDetails(SaleDetails saleDetails) {
+    public ResponseEntity<ApiResult> insertSalesDetails(SalesModel salesModel) {
         try {
-            Optional<Sales> foundSales = salesRepository.findById(saleDetails.getSalesId());
-            Optional<Product> foundProduct = productRepository.findById(saleDetails.getProductId());
-            if (foundProduct.isPresent() && foundSales.isPresent()) {
-                Double price = foundProduct.get().getPrice()
-                        - foundProduct.get().getPrice() * foundSales.get().getPercent() / 100;
-                saleDetails.setSalesPrice(price);
+
+            Optional<Sales> foundSales = salesRepository.findById(salesModel.getSalesId());
+            if (foundSales.isPresent()) {
+                List<SaleDetails> litsResponse = new ArrayList<SaleDetails>();
+                for (Product product : salesModel.getListProduct()) {
+                    Optional<Product> foundProduct = productRepository.findById(product.getProductId());
+                    if (foundProduct.isPresent()) {
+                        Double price = foundProduct.get().getPrice()
+                                - foundProduct.get().getPrice() * foundSales.get().getPercent() / 100;
+                        SaleDetails saleDetails = new SaleDetails(foundSales.get().getSalesId(),
+                                foundProduct.get().getProductId(), price, salesModel.getUpdateBy());
+                        saleDetailsRepository.save(saleDetails);
+                        litsResponse.add(saleDetails);
+                    }
+                }
+
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ApiResult(true, 200, "insert Successfully",
-                                saleDetailsRepository.save(saleDetails)));
+                                litsResponse));
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResult(false, 400, "cannot insert new sale details",
-                            saleDetailsRepository.save(saleDetails)));
+                            null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResult(false, 400, e.getMessage(), null));
         }
+    }
+
+    void insertItemSalesDetails(Product product, SalesModel salesModel, Sales sales, List<SaleDetails> listResponse) {
+        Double price = product.getPrice()
+                - product.getPrice() * sales.getPercent() / 100;
+        SaleDetails saleDetails = new SaleDetails(sales.getSalesId(),
+                product.getProductId(), price, salesModel.getUpdateBy());
+        saleDetailsRepository.save(saleDetails);
+        listResponse.add(saleDetails);
+    }
+
+    public Date findEndDayForProductInSales(Product product) {
+        List<Sales> salesList = salesRepository.findAll();
+        List<SaleDetails> salesDetailsList = saleDetailsRepository.findAll();
+
+        Optional<Sales> salesOptional = salesList.stream()
+                .filter(sales -> salesDetailsList.stream()
+                        .filter(salesDetails -> salesDetails.getSalesId().equals(sales.getSalesId()))
+                        .anyMatch(salesDetails -> salesDetails.getProductId().equals(product.getProductId())))
+                .findFirst();
+
+        if (salesOptional.isPresent()) {
+            Sales sales = salesOptional.get();
+            return sales.getEndDay();
+        }
+
+        return null;
+    }
+
+    public boolean isExpired(Date endDay) {
+        Date now = new Date();
+
+        return now.before(endDay);
     }
 
     public ResponseEntity<ApiResult> deleteSaleDetails(String id) {

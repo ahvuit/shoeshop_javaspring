@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ahvuit.be_shoeshop.entity.SaleDetails;
 import com.ahvuit.be_shoeshop.models.ApiResult;
+import com.ahvuit.be_shoeshop.models.SalesModel;
 import com.ahvuit.be_shoeshop.service.SaleDetailsService;
 
 @RestController
@@ -24,8 +23,8 @@ public class SaleDetailsController {
     }
 
     @PostMapping("/api/insertSalesDetails")
-    ResponseEntity<ApiResult> insertSalesDetails(@RequestBody SaleDetails saleDetails) {
-        return saleDetailsService.insertSalesDetails(saleDetails);
+    ResponseEntity<ApiResult> insertSalesDetails(@RequestBody SalesModel salesModel) {
+        return saleDetailsService.insertSalesDetails(salesModel);
     }
 
     @DeleteMapping("/api/deleteSaleDetails/{id}")
