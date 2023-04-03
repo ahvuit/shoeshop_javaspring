@@ -1,8 +1,9 @@
 package com.ahvuit.be_shoeshop.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,44 @@ public class SalesService {
                 }
         }
 
+        public ResponseEntity<ApiResult> getAllSalesActive() {
+                try {
+                        Date date = new Date();
+                        List<Sales> list = new ArrayList<Sales>();
+                        List<Sales> foundSales = salesRepository.findAll();
+                        for (Sales sales : foundSales) {
+                                if (sales.getEndDay().compareTo(date) > 0 || sales.getStartDay().compareTo(date) == 0) {
+                                        list.add(sales);
+                                }
+                        }
+                        return ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Query sales successfully",
+                                                        list));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
+        }
+
+        public ResponseEntity<ApiResult> getAllSalesComingSoon() {
+                try {
+                        Date date = new Date();
+                        List<Sales> list = new ArrayList<Sales>();
+                        List<Sales> foundSales = salesRepository.findAll();
+                        for (Sales sales : foundSales) {
+                                if (sales.getStartDay().compareTo(date) > 0) {
+                                        list.add(sales);
+                                }
+                        }
+                        return ResponseEntity.status(HttpStatus.OK).body(
+                                        new ApiResult(true, 200, "Query sales successfully",
+                                                        list));
+                } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                                        new ApiResult(false, 400, e.getMessage(), null));
+                }
+        }
+
         public ResponseEntity<ApiResult> findById(String id) {
                 try {
                         return checkStatusId(id) ? ResponseEntity.status(HttpStatus.OK).body(
@@ -43,7 +82,6 @@ public class SalesService {
 
         public ResponseEntity<ApiResult> insertSales(Sales sales) {
                 try {
-                        sales.setStartDay(new Date());
                         sales.setCreatedDate(new Date());
                         return checkStatusName(sales.getSalesName())
                                         ? ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(

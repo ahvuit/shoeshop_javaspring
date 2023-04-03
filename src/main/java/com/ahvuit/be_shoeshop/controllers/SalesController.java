@@ -29,6 +29,16 @@ public class SalesController {
         return salesService.findById(id);
     }
 
+    @GetMapping("/api/getAllSalesActive")
+    ResponseEntity<ApiResult> getAllSalesActive() {
+        return salesService.getAllSalesActive();
+    }
+
+    @GetMapping("/api/getAllSalesComingSoon")
+    ResponseEntity<ApiResult> getAllSalesComingSoon() {
+        return salesService.getAllSalesComingSoon();
+    }
+
     @PostMapping("/api/insertSales")
     ResponseEntity<ApiResult> insertSales(@RequestBody Sales sales) {
         return salesService.insertSales(sales);
