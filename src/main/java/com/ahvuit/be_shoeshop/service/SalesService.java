@@ -36,7 +36,8 @@ public class SalesService {
                         List<Sales> list = new ArrayList<Sales>();
                         List<Sales> foundSales = salesRepository.findAll();
                         for (Sales sales : foundSales) {
-                                if (sales.getEndDay().compareTo(date) > 0 || sales.getStartDay().compareTo(date) == 0) {
+                                if ((sales.getEndDay().compareTo(date) > 0 || sales.getEndDay().compareTo(date) == 0)
+                                                && sales.getStartDay().compareTo(date) < 0) {
                                         list.add(sales);
                                 }
                         }

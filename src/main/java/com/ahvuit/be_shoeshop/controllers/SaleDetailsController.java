@@ -22,6 +22,16 @@ public class SaleDetailsController {
         return saleDetailsService.findById(id);
     }
 
+    @GetMapping("/api/getAllSaleDetailsActive")
+    ResponseEntity<ApiResult> getAllSaleDetailsActive() {
+        return saleDetailsService.getAllSaleDetailsActive();
+    }
+
+    @GetMapping("/api/getAllSaleDetailsComingSoon")
+    ResponseEntity<ApiResult> getAllSaleDetailsComingSoon() {
+        return saleDetailsService.getAllSaleDetailsComingSoon();
+    }
+
     @PostMapping("/api/insertSalesDetails")
     ResponseEntity<ApiResult> insertSalesDetails(@RequestBody SalesModel salesModel) {
         return saleDetailsService.insertSalesDetails(salesModel);

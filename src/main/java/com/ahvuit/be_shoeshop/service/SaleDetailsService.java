@@ -79,6 +79,49 @@ public class SaleDetailsService {
         listResponse.add(saleDetails);
     }
 
+    public ResponseEntity<ApiResult> getAllSaleDetailsActive() {
+        try {
+            Date date = new Date();
+            List<SaleDetails> listSD = new ArrayList<SaleDetails>();
+            List<Sales> listSales = salesRepository.findAll();
+
+            for (Sales sales : listSales) {
+                if ((sales.getEndDay().compareTo(date) > 0 || sales.getEndDay().compareTo(date) == 0)
+                        && sales.getStartDay().compareTo(date) < 0) {
+                    List<SaleDetails> saleDetails = saleDetailsRepository.getSaleDetailsBySalesId(sales.getSalesId());
+                    listSD.addAll(saleDetails);
+                }
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResult(true, 200, "Query Successfully", listSD));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResult(false, 400, e.getMessage(), null));
+        }
+    }
+
+    public ResponseEntity<ApiResult> getAllSaleDetailsComingSoon() {
+        try {
+            Date date = new Date();
+            List<SaleDetails> listSD = new ArrayList<SaleDetails>();
+            List<Sales> listSales = salesRepository.findAll();
+
+            for (Sales sales : listSales) {
+                if (sales.getStartDay().compareTo(date) > 0) {
+                    List<SaleDetails> saleDetails = saleDetailsRepository.getSaleDetailsBySalesId(sales.getSalesId());
+                    listSD.addAll(saleDetails);
+                }
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResult(true, 200, "Query Successfully", listSD));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResult(false, 400, e.getMessage(), null));
+        }
+    }
+
     public Date findEndDayForProductInSales(Product product) {
         List<Sales> salesList = salesRepository.findAll();
         List<SaleDetails> salesDetailsList = saleDetailsRepository.findAll();
@@ -105,9 +148,11 @@ public class SaleDetailsService {
 
     public ResponseEntity<ApiResult> deleteSaleDetails(String id) {
         try {
-            Optional<SaleDetails> saleDetails = saleDetailsRepository.getSaleDetailsByProductId(id);
-            if (saleDetails.isPresent()) {
-                saleDetailsRepository.deleteById(saleDetails.get().getId());
+            List<SaleDetails> saleDetails = saleDetailsRepository.getSaleDetailsBySalesId(id);
+            if (!saleDetails.isEmpty()) {
+                for (SaleDetails element : saleDetails) {
+                    saleDetailsRepository.delete(element);
+                }
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ApiResult(true, 200, "Delete Successfully ",
                                 null));
