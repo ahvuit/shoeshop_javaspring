@@ -1,5 +1,7 @@
 package com.ahvuit.be_shoeshop.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ahvuit.be_shoeshop.entity.SaleDetails;
 import com.ahvuit.be_shoeshop.models.ApiResult;
 import com.ahvuit.be_shoeshop.models.SalesModel;
 import com.ahvuit.be_shoeshop.service.SaleDetailsService;
@@ -40,5 +44,10 @@ public class SaleDetailsController {
     @DeleteMapping("/api/deleteSaleDetails/{id}")
     public ResponseEntity<ApiResult> deleteSaleDetails(@PathVariable String id) {
         return saleDetailsService.deleteSaleDetails(id);
+    }
+
+    @DeleteMapping("/api/deleteSaleDetailsByList")
+    public ResponseEntity<ApiResult> deleteSaleDetailsByList(@RequestBody List<SaleDetails> listSalesDetails) {
+        return saleDetailsService.deleteSaleDetailsByList(listSalesDetails);
     }
 }

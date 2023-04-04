@@ -165,4 +165,18 @@ public class SaleDetailsService {
                     new ApiResult(false, 400, e.getMessage(), null));
         }
     }
+
+    public ResponseEntity<ApiResult> deleteSaleDetailsByList(List<SaleDetails> listSalesDetails) {
+        try {
+            for (SaleDetails element : listSalesDetails) {
+                saleDetailsRepository.delete(element);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResult(true, 200, "Delete Successfully ",
+                            null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResult(false, 400, e.getMessage(), null));
+        }
+    }
 }
